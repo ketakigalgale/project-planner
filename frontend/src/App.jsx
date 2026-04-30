@@ -5,7 +5,7 @@ import TaskList from "./components/TaskList";
 import GanttChart from "./components/GanttChart";
 import "./App.css";
 
-const API = "https://project-planner-tcbe.onrender.com/";
+const API = "https://project-planner-tcbe.onrender.com/api/tasks";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);

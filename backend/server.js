@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:5000/",
-      "https://project-planner-tcbe.onrender.com/"], // Vite default port
+      "https://project-planner-tcbe.onrender.com"], // Vite default port
     methods: ["GET", "POST", "DELETE"],
   }),
 );
