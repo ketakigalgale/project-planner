@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/tasks";
+const API = "https://project-planner-tcbe.onrender.com/";
 
 export default function TaskList({ tasks, onRefresh, onMessage }) {
   const handleDelete = async (taskId) => {

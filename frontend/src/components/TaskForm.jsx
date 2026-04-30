@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API = "http://localhost:5000/api/tasks";
+const API = "https://project-planner-tcbe.onrender.com/";
 
 export default function TaskForm({ onTaskAdded, onMessage }) {
   const [form, setForm] = useState({
