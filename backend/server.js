@@ -14,7 +14,8 @@ app.use(express.json());
 // Allow requests from React frontend (CORS)
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite default port
+    origin: ["http://localhost:5000/",
+      "https://project-planner-tcbe.onrender.com/"], // Vite default port
     methods: ["GET", "POST", "DELETE"],
   }),
 );
