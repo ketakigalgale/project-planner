@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const API = "https://project-planner-tcbe.onrender.com/api/tasks";
+const API = import.meta.env.VITE_API_URL;
 
-export default function TaskList({ tasks, onRefresh, onMessage }) {
+export default function TaskList({ tasks, onRefresh, onMessage }) {//Props Destructuring
   const handleDelete = async (taskId) => {
     try {
-      await axios.delete(`${API}/${taskId}`);
+      await axios.delete(`${API}/${taskId}`); //Delete API
       onMessage({ type: "success", text: `Task ${taskId} deleted.` });
-      onRefresh();
+      onRefresh(); //get updated list after deletion(fetchtask)
     } catch (err) {
       onMessage({ type: "error", text: "Failed to delete task." });
     }
@@ -17,7 +17,7 @@ export default function TaskList({ tasks, onRefresh, onMessage }) {
     try {
       const res = await axios.post(`${API}/schedule`);
       onMessage({ type: "success", text: res.data.message });
-      onRefresh();
+      onRefresh(); //fetch tasks
     } catch (err) {
       onMessage({
         type: "error",
@@ -41,6 +41,7 @@ export default function TaskList({ tasks, onRefresh, onMessage }) {
           No tasks yet. Add a task or load sample data.
         </div>
       ) : (
+        //else ternaryoperator
         tasks.map((task) => (
           <div className="task-item" key={task.taskId}>
             <div className="task-info">
@@ -48,7 +49,7 @@ export default function TaskList({ tasks, onRefresh, onMessage }) {
                 #{task.taskId} — {task.name}
               </div>
               <div className="task-meta">
-                {task.duration}d &nbsp;|&nbsp; deps:{" "}
+                {task.duration}d {"|"} deps:
                 {task.dependencies.length > 0
                   ? task.dependencies.join(", ")
                   : "none"}

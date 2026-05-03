@@ -5,7 +5,7 @@ import TaskList from "./components/TaskList";
 import GanttChart from "./components/GanttChart";
 import "./App.css";
 
-const API = "https://project-planner-tcbe.onrender.com/api/tasks";
+const API = import.meta.env.VITE_API_URL;
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
@@ -14,14 +14,14 @@ export default function App() {
   // Fetch all tasks from the backend
   const fetchTasks = async () => {
     try {
-      const res = await axios.get(API);
-      setTasks(res.data);
+      const res = await axios.get(API);  //GET API called using axios
+      setTasks(res.data); 
     } catch (err) {
       showMessage({ type: "error", text: "Cannot connect to backend." });
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { //Run this code only once when the component first appears on screen
     fetchTasks();
   }, []);
 
@@ -51,8 +51,8 @@ export default function App() {
       {/* ── MAIN GRID ── */}
       <div className="grid">
         <TaskForm onTaskAdded={fetchTasks} onMessage={showMessage} />
-        <TaskList
-          tasks={tasks}
+        <TaskList   //props
+          tasks={tasks}  
           onRefresh={fetchTasks}
           onMessage={showMessage}
         />

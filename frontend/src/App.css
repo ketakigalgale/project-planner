@@ -320,3 +320,70 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.3);
   color: #6ee7b7;
 }
+/* ── RESPONSIVE ── */
+
+/* Tablet: stack the two-column grid into one column */
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+  }
+
+  .header {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header p {
+    font-size: 0.85rem;
+  }
+
+  /* Stack form + task list vertically instead of side by side */
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-warning {
+    width: 100%;
+  }
+}
+
+/* Mobile: tighten up task items so they don't overflow */
+@media (max-width: 480px) {
+  .app {
+    padding: 0.75rem;
+  }
+
+  .header h1 {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  /* Let task item wrap onto two lines on very small screens */
+  .task-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .task-schedule {
+    /* Push the day range to its own line below the task name */
+    width: 100%;
+    order: 3;
+  }
+
+  .btn-danger {
+    order: 4;
+    align-self: flex-end;
+  }
+
+  /* Make Calculate Schedule button full width */
+  .btn-success {
+    width: 100%;
+  }
+}

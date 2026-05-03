@@ -28,7 +28,7 @@ export default function GanttChart({ tasks }) {
   }
 
   // Find the total number of days for the X-axis
-  const totalDays = Math.max(...scheduled.map((t) => t.endDay));
+  const totalDays = Math.max(...scheduled.map((t) => t.endDay)); //Total project duration
   const DAY_WIDTH = 40; // pixels per day
 
   // Create day markers for the header (0, 1, 2 ... totalDays)
@@ -55,9 +55,9 @@ export default function GanttChart({ tasks }) {
 
           {/* ── TASK ROWS ── */}
           {scheduled.map((task, index) => {
-            const barLeft = task.earliestStart * DAY_WIDTH;
-            const barWidth = task.duration * DAY_WIDTH;
-            const color = COLORS[index % COLORS.length];
+            const barLeft = task.earliestStart * DAY_WIDTH; //bar start
+            const barWidth = task.duration * DAY_WIDTH;    //length
+            const color = COLORS[index % COLORS.length];  //%-keep cycling colours from COLORS arr
 
             return (
               <div className="gantt-row" key={task.taskId}>
@@ -104,7 +104,7 @@ export default function GanttChart({ tasks }) {
         </div>
       </div>
 
-      {/* ── LEGEND ── */}
+      {/* ── LEGEND ── */}   
       <div
         style={{
           marginTop: "1.5rem",

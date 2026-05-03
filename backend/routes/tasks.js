@@ -2,9 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
 
-// ─────────────────────────────────────────────
 // GET /api/tasks — Fetch all tasks
-// ─────────────────────────────────────────────
 router.get("/", async (req, res) => {
   try {
     // Find all tasks, sorted by taskId ascending
@@ -15,9 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // POST /api/tasks — Create a new task
-// ─────────────────────────────────────────────
 
 router.post("/", async (req, res) => {
   try {
@@ -31,7 +27,7 @@ router.post("/", async (req, res) => {
     }
 
     // Check if taskId already exists
-    const existing = await Task.findOne({ taskId });
+    const existing = await Task.findOne({ taskId }); //check duplicates
     if (existing) {
       return res
         .status(400)
@@ -54,9 +50,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // DELETE /api/tasks/:taskId — Delete a task
-// ─────────────────────────────────────────────
 router.delete("/:taskId", async (req, res) => {
   try {
     const deleted = await Task.findOneAndDelete({
@@ -71,9 +65,7 @@ router.delete("/:taskId", async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // POST /api/tasks/seed — Seed example tasks from assignment
-// ─────────────────────────────────────────────
 router.post("/seed", async (req, res) => {
   try {
     // Clear existing tasks first
@@ -93,7 +85,6 @@ router.post("/seed", async (req, res) => {
   }
 });
 
-// ─────────────────────────────────────────────
 // POST /api/tasks/schedule — Calculate schedule
 //
 // ALGORITHM: Topological Sort + Earliest Start Calculation
@@ -103,7 +94,7 @@ router.post("/seed", async (req, res) => {
 //   - A task can start only after ALL its dependencies finish
 //   - earliestStart = max(endDay of all dependencies)
 //   - endDay = earliestStart + duration
-// ─────────────────────────────────────────────
+
 router.post("/schedule", async (req, res) => {
   try {
     // Step 1: Fetch all tasks from DB
@@ -132,7 +123,7 @@ router.post("/schedule", async (req, res) => {
     // Build in-degree count (how many dependencies each task has)
     const inDegree = {};
     tasks.forEach((t) => {
-      inDegree[t.taskId] = t.dependencies.length;
+      inDegree[t.taskId] = t.dependencies.length; //count dependencies
     });
 
     // Queue starts with all tasks that have zero dependencies
@@ -148,13 +139,12 @@ router.post("/schedule", async (req, res) => {
     const dependents = {}; // { taskId -> [taskIds that depend on me] }
     tasks.forEach((t) => {
       t.dependencies.forEach((depId) => {
-        if (!dependents[depId]) dependents[depId] = [];
-        dependents[depId].push(t.taskId);
+        if (!dependents[depId]) dependents[depId] = []; //if not exist then create array
+        dependents[depId].push(t.taskId); //add current task
       });
     });
 
     const processingOrder = [];
-
     // Process queue
     while (queue.length > 0) {
       const currentId = queue.shift(); // Take first task from queue
@@ -162,11 +152,11 @@ router.post("/schedule", async (req, res) => {
 
       // Calculate endDay
       current.endDay = current.earliestStart + current.duration;
-
       processingOrder.push(currentId);
 
       // For each task that depends on currentId, update their earliestStart
       if (dependents[currentId]) {
+        //finds all tasks that depend on the current task
         dependents[currentId].forEach((dependentId) => {
           const dep = taskMap[dependentId];
 
@@ -179,8 +169,9 @@ router.post("/schedule", async (req, res) => {
           }
 
           // Reduce in-degree; if 0, all dependencies processed → add to queue
-          inDegree[dependentId]--;
+          inDegree[dependentId]--; //One dependency is now finished
           if (inDegree[dependentId] === 0) {
+            //All dependencies completed
             queue.push(dependentId);
           }
         });
@@ -202,11 +193,11 @@ router.post("/schedule", async (req, res) => {
         { new: true },
       ),
     );
-    const updatedTasks = await Promise.all(updatePromises);
+    const updatedTasks = await Promise.all(updatePromises); //Runs all updates in parallel
 
-    res.json({
+    res.json({ //Sends the final scheduled tasks back to frontend
       message: "Schedule calculated successfully!",
-      schedule: updatedTasks.sort((a, b) => a.taskId - b.taskId),
+      schedule: updatedTasks.sort((a, b) => a.taskId - b.taskId), //Sorting tasks before sending
     });
   } catch (err) {
     res.status(500).json({ error: "Server error: " + err.message });

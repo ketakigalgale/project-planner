@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API = "https://project-planner-tcbe.onrender.com/api/tasks";
+const API = import.meta.env.VITE_API_URL;
 
-export default function TaskForm({ onTaskAdded, onMessage }) {
+export default function TaskForm({ onTaskAdded, onMessage }) {//Props Destructuring
   const [form, setForm] = useState({
     taskId: "",
     name: "",
@@ -40,9 +40,9 @@ export default function TaskForm({ onTaskAdded, onMessage }) {
         duration: parseInt(form.duration),
         dependencies: deps,
       });
-      onMessage({ type: "success", text: `Task "${form.name}" added!` });
-      setForm({ taskId: "", name: "", duration: "", dependencies: "" });
-      onTaskAdded(); // Refresh task list
+      onMessage({ type: "success", text: `Task "${form.name}" added!` }); //Showmessage
+      setForm({ taskId: "", name: "", duration: "", dependencies: "" }); //clear input field
+      onTaskAdded(); //Refresh task list - Fetchtask
     } catch (err) {
       onMessage({
         type: "error",
@@ -122,7 +122,7 @@ export default function TaskForm({ onTaskAdded, onMessage }) {
         style={{ width: "100%" }}
         onClick={handleSeed}
       >
-        📦 Load Sample Tasks (from Assignment)
+        Load Sample Tasks
       </button>
     </div>
   );

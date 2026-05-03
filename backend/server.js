@@ -1,24 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config(); // Load .env variables
+require("dotenv").config(); 
 
 const taskRoutes = require("./routes/tasks");
 
 const app = express();
 
-// ── MIDDLEWARE ──────────────────────────────────
+// MIDDLEWARE 
 // Parse incoming JSON request bodies
 app.use(express.json());
 
 // Allow requests from React frontend (CORS)
 app.use(
   cors({
-    origin: "*",
+    origin:[
+    "http://localhost:5173",
+    "https://project-planner-1-6mqz.onrender.com "],
     methods: ["GET", "POST", "DELETE"],
   }),
 );
-// ── ROUTES ──────────────────────────────────────
+// ROUTES 
 // All task routes are prefixed with /api/tasks
 app.use("/api/tasks", taskRoutes);
 
@@ -27,23 +29,23 @@ app.get("/", (req, res) => {
   res.json({ message: "Project Planner API is running!" });
 });
 
-// ── DATABASE CONNECTION ──────────────────────────
+//  DATABASE CONNECTION 
 // mongoose.connect() returns a Promise
 // We wait for it before starting the server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT ;
 const MONGO_URI = process.env.MONGO_URI;
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
-    console.log("✅ Connected to MongoDB successfully!");
+mongoose.connect(MONGO_URI) //connect backend to MONGODB
+
+  .then(() => { //wait untill DB connected
+    console.log(" Connected to MongoDB successfully!");
 
     // Start the Express server only after DB connection is established
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(` Server running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err.message);
+    console.error(" MongoDB connection failed:", err.message);
     process.exit(1); // Exit process if DB connection fails
   });

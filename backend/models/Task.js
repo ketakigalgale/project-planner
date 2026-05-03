@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Define the schema (blueprint) for a Task document in MongoDB
+// blueprint for a Task document in MongoDB
 const TaskSchema = new mongoose.Schema(
   {
     taskId: {
@@ -20,7 +20,6 @@ const TaskSchema = new mongoose.Schema(
     },
     dependencies: {
       // Array of taskIds this task depends on
-      // e.g. [1, 2] means this task starts after tasks 1 and 2 finish
       type: [Number],
       default: [],
     },
