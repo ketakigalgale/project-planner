@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://project-planner-tcbe.onrender.com/api/tasks";
+const API = import.meta.env.VITE_API_URL;
 
 export default function TaskList({ tasks, onRefresh, onMessage }) {//Props Destructuring
   const handleDelete = async (taskId) => {

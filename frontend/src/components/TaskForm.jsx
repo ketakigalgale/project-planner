@@ -1,8 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API = "https://project-planner-tcbe.onrender.com/api/tasks";
-
+const API = import.meta.env.VITE_API_URL;
 export default function TaskForm({ onTaskAdded, onMessage }) {//Props Destructuring
   const [form, setForm] = useState({
     taskId: "",
