@@ -14,7 +14,7 @@ app.use(express.json());
 // Allow requests from React frontend (CORS)
 app.use(
   cors({
-    origin: "https://project-planner-10.onrender.com/",
+    origin: "https://project-planner-1-6mqz.onrender.com",
     methods: ["GET", "POST", "DELETE"],
   }),
 );
